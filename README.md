@@ -2,6 +2,7 @@
 
 **Supported Languages** <br>
 **C#** <br>
+- .Net 4.8
 
 
 **Python** <br>
