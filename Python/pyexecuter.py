@@ -1,6 +1,10 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
+from tkinter import messagebox
+from tkinter import filedialog
+
+import os
 
 bgcolor = '#d9d9d9'
 fgcolor = '#000000'
@@ -9,6 +13,59 @@ tabfg2 = 'white'
 bgmode = 'light' 
 tabbg1 = '#d9d9d9' 
 tabbg2 = 'gray40' 
+
+def Execute(source):
+    print(source)
+
+def Inject():
+    messagebox.showinfo("Information", "You need to add this lol!")
+
+def openFile(text_widget):
+    file_path = filedialog.askopenfilename(
+        filetypes=[
+            ("Text files", "*.txt"),
+            ("Lua files", "*.lua")
+        ]
+    )
+    if file_path:
+        with open(file_path, "r") as file:
+            text_content = file.read()
+            text_widget.delete("1.0", tk.END)
+            text_widget.insert("1.0", text_content)
+
+def SaveFile(text_widget):
+    text_content = text_widget.get("1.0", tk.END)  
+    file_path = filedialog.asksaveasfilename(
+    defaultextension=".txt",
+    filetypes=[
+        ("Text files", "*.txt"),
+        ("Lua files", "*.lua")
+    ]
+)
+    if file_path:
+        with open(file_path, "w") as file:
+            file.write(text_content)
+        print("File saved successfully.")
+
+def Clear(ClearButton):
+    ClearButton.delete('1.0', tk.END)
+
+def setup():
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.join(current_dir, 'scripts')
+
+    if os.path.exists(script_dir) and os.path.isdir(script_dir):
+        print("Directory 'scripts' exists.")
+    else:
+        print("Directory 'scripts' does not exist. Creating.")
+        os.makedirs(script_dir)
+        print("Made directory at location:" + script_dir)
+    
+def close(root):
+    root.destroy()
+
+def minimize(root):
+    root.iconify()
 
 class DraggableWindow(tk.Tk):
     def __init__(self):
@@ -140,9 +197,24 @@ class DraggableWindow(tk.Tk):
         self.Clear.configure(highlightbackground="#d9d9d9")
         self.Clear.configure(highlightcolor="#000000")
         self.Clear.configure(text='''Clear''')
-        self.overrideredirect(True)
 
-        # Bind mouse events to handle window dragging
+
+        self.Execute.configure(command=self.on_execute)
+        self.Clear.configure(command=self.on_clear)
+        self.Inject.configure(command=lambda:Inject())
+        self.SF.configure(command=lambda: SaveFile(self.Text1))
+        self.OF.configure(command=lambda: openFile(self.Text1))
+        self.Close.configure(command=lambda: close(self.top))
+        self.Minimise.configure(command=lambda: minimize(self.top))
+
+
+    def on_execute(self):
+        text_content = self.Text1.get("1.0", tk.END)  # Get all text from the Text widget
+        Execute(text_content)
+
+    def on_clear(self):
+        self.Text1.delete("1.0", tk.END)
+
         self.bind("<ButtonPress-1>", self.start_drag)
         self.bind("<B1-Motion>", self.drag)
 
@@ -162,5 +234,6 @@ class DraggableWindow(tk.Tk):
         self.geometry(f"+{x}+{y}")
 
 if __name__ == "__main__":
+    setup()
     app = DraggableWindow()
     app.mainloop()
