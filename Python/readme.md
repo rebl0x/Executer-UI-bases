@@ -1,2 +1,2 @@
-Requirements: <br>
+**Requirements** <br>
 - Tkinter
