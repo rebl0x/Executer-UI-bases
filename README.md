@@ -1,5 +1,7 @@
 # Executer-UI-bases
 
+Everything here is free for use and modifcation <br>
+
 **Supported Languages** <br>
 **C#** <br>
 - .Net 4.8 <br>
