@@ -1,6 +1,6 @@
 # Executer-UI-bases
 
-Everything here is free for use and modifcation <br>
+Everything here is free for use and modifcation, UIS do not include exectuion or injector. <br>
 
 **Supported Languages** <br>
 **C#** <br>
